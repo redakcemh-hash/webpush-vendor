@@ -1,0 +1,27 @@
+name: Build Vendor
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Install Composer
+        run: sudo apt-get update && sudo apt-get install -y composer
+
+      - name: Create webpush project
+        run: |
+          mkdir webpush
+          cd webpush
+          composer require minishlink/web-push
+
+      - name: Upload vendor as artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: vendor
+          path: webpush/vendor
